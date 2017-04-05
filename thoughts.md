@@ -1,7 +1,11 @@
 # Personal Thoughts
 
+## Context
+
 This document stores a couple of my personal thoughts while listening to 
 presentations in ngConf such as what prevents me from using Angular in production.
+
+## Blocking stones
 
 First of all, the biggest blocking point that prevents me from using Angular 
 in production is build system and configuration. In my work environment, I have
@@ -28,3 +32,24 @@ RxJS & new build system). On my end, I'm getting used to it more and more as I
 use Angular more on my free time. This makes me scared to push it to production
 as I will need to teach/mentor other developers to pick up knowledge. I don't
 think I have enough time and resouce to do that.
+
+## Future maintainence
+
+Assuming moving with Angular, my next concern is how we maintain application 
+modules. In my work, it's very common to reuse components in between 
+applications. This leads to the direction that we need a way to define common
+components that is reusable and sharable between applications while keeping up
+the speed of feature development.
+
+The biggest challenge of the existing workflow is to define common elements and
+maintain such elements. For most of time, developers cant maintain this element.
+Due to that even reusing same element, UI/UX designer still would like to tweak
+this element on one place but not the other, which makes developer to just copy
+and paste the element with new tweak. Thus, leading to duplication of elements and
+higher maintainence cost.
+
+Continuing Angular or what not, I need to define this workflow to create and 
+maintain the common elements (like custom modal, custom file uploader ... etc.).
+
+Angular seems to have ngModule so that it's easier to split code and reuse. 
+However, I'll need to figure out a guidelines for modules.
