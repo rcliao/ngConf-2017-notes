@@ -53,3 +53,55 @@ maintain the common elements (like custom modal, custom file uploader ... etc.).
 
 Angular seems to have ngModule so that it's easier to split code and reuse. 
 However, I'll need to figure out a guidelines for modules.
+
+## Advantage of Angular
+
+Angular has a couple unique supports out of box or some refers to high learning
+curve:
+
+* TypeScript
+* RxJS
+* Angular CLI
+
+### Why is TypeScript good?
+
+TypeScript gives IDE like feature in text editor like VS Code. For example, you 
+can easily do intellisense, navigate by command click method name and so on.
+Moreover, TypeScript is a strong typed language. This implies the type testing
+is implicitly done and it will reduce the chance of runtime error in application.
+
+Overall, TypeScript is a nice language. One can argue they have to learn new 
+language coming from the JavaScript background. However, with the newest version
+of TypeScript, you can simply replace the `.js` file to `.ts` file to begin with.
+And slowly, you can replace the arguments to strong type one by one. This is, I
+think the path transitioning into TypeScript.
+
+In addition to strong type, developers may start to use 
+[Domain Driven Design (DDD)](https://en.wikipedia.org/wiki/Domain-driven_design) 
+on front end application. In my opinion, DDD leads to easier to understand code.
+I'm gonig to use Page object as example since I work for CMS system for past 3 
+years. Page can have some special methods in it like page layout factory. 
+Usually, front end application scatters these code to handle layout construction
+everywhere (or at least in my experience). Worst of all, the code is duplicated
+on many different components. Some better developers may create a utilities class
+to hold such methods. However, other developers to came into this system without
+any previous knowledge or documentation may find it confusing to follow code.
+
+
+### Why is RxJS good?
+
+A brand new toy for developers to code! No really, it's a nice way to handle 
+async actions such as http request, handling browser events ... etc. Aync events
+usually leads down to callback hell; however, with ES6, JavaScript developers can
+start to use Promise to handle individual http request without going into the
+callback hell pattern. Nevertheless, if the developer needs to make multiple
+http requests, they start to suffer into the indentation hell (which is similar
+to callback hell but ending up high amount of indentations). Observable helps
+in this case, Observables are like Promise but handles multiple of them well.
+
+### Why is Angular-CLI good?
+
+Allows developer to use CLI to handle common operations like creating new 
+componenets. This reduce the chance of going off track and helps to keep high
+consistency of the code. Moreover, this allows the framework later to take 
+advantage of the application structure to migrate to newer version! Amazing!
