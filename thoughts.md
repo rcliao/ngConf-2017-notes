@@ -2,68 +2,77 @@
 
 ## Context
 
-This document stores a couple of my personal thoughts while listening to 
-presentations in ngConf such as what prevents me from using Angular in production.
+This document stores my personal thoughts on Angular while listening to presentations 
+in ngConf such as what prevents me from using Angular in production and my 
+strategies of implementing Angular in production environment.
 
 ## Blocking stones
+
+Before we start, I need to state -- **I love Angular**. But I'm not using Angular in
+production yet and not plan to use it before ngConf. Why? There are some blocking
+stones for me to consider using it on my work environments.
 
 ### Build system
 
 First of all, the biggest blocking point that prevents me from using Angular 
-in production is build system and configuration. In my work environment, I have
-to make sure the Angular app works with the existing build system and allows the
-server side application to loads up such assets (Angular).
+in production is the **build system and configuration**. In my work, I have
+to make sure the Angular app works with the existing build system (GulpJS) and 
+allows the static server to loads up built assets.
 
-This implies the first blocking stone to use Angular on production is actually
-build system.
+### Existing front-end architecture
+
+After that, we have a team that is jumping between React, AngularJS and even Vue.js.
+To make it worse, most recent applications are written in React with a lof of its
+own hacks to get custom component working. As this leads on, it becomes harder 
+and harder to refactor into a single system or what not. Don't get me wrong, the
+way we are doing it now leads to framework agnostic but with a cost
+
+Current workflow is to code lower level reusable components in WebComponent.js 
+and have AngularJS & React to handle higher level business logic (such as routing 
+& domain-specific logic). This works well for a while, but this requires developers 
+to know even more than just single frameowrk. As result, most of time, we cant 
+really utilize a framework well and lean toward direct DOM manipulation. Also,
+this creates higher chance of bugs like sometimes we forgot to remove event 
+listener on custom element deattach.
 
 ### Learning curve
 
-After that, in my work, we have a team that is jumping between React and AngularJS.
-To make it worse, most recent applications are written in React with a lof of its
-own hack to get component working. As this leads on, it becomes harder and harder
-to refactor into a single system or what not.
-
-Current workflow is to code reusable components in WebComponent.js and have AngularJS
-& React to handle higher level logic (such as routing & business logic). This works
-for a while, but this requires developers to know even more than just single frameowrk.
-As result, most of time, we cant really utilize a framework well and leaning toward
-direct DOM manipulation. This also leads to higher chance of bugs.
-
-### Tols
-
-Enough of the situation rant, third point that blocks me from using Angular on 
+Enough of the situation rant, third blocking stone from using Angular on 
 prod is the fact having a lot of tools in the framework built in (TypeScript,
-RxJS & new build system). On my end, I'm getting used to it more and more as I
-use Angular more on my free time. This makes me scared to push it to production
-as I will need to teach/mentor other developers to pick up knowledge. I don't
-think I have enough time and resouce to do that.
+RxJS & new build system like SystemJS or Webpack). Although, I'm getting used to 
+it more and more as I use Angular more on my free time. This terrifies me to use 
+Angular to production as I will need to scale these knowledge to other developers. 
+I don't think I have enough time and resouce to do that.
+
+On the other hand, if utilizing these tools correctly, it should reduce the time
+to scale knowledge as there should be enough online resouces.
 
 ## Future maintainence
 
 Assuming moving with Angular, my next concern is how we maintain application 
-modules. In my work, it's very common to reuse components in between 
-applications. This leads to the direction that we need a way to define common
+structures. In my work, it's very common to reuse components in between 
+applications (new and old). This leads to the decision that we need to define common
 components that is reusable and sharable between applications while keeping up
-the speed of feature development.
+the speed of new feature development.
 
-The biggest challenge of the existing workflow is to define common elements and
-maintain such elements. For most of time, developers cant maintain this element.
-Due to that even reusing same element, UI/UX designer still would like to tweak
-this element on one place but not the other, which makes developer to just copy
-and paste the element with new tweak. Thus, leading to duplication of elements and
+The biggest challenge of the existing workflow is to define common components and
+maintain such elements. For most of time, developers cant maintain this element; 
+because even reusing same element, UI/UX designers still would like to tweak
+the element on one place but not the other (to avoid regression) -- which makes 
+developer to just copy and paste the component with new tweak on new feature but 
+not modify the old feature ones. Thus, leading to duplication of components and
 higher maintainence cost.
 
-Continuing Angular or what not, I need to define this workflow to create and 
+Continuing Angular or what not, we need to define this workflow to create and 
 maintain the common elements (like custom modal, custom file uploader ... etc.).
 
 Angular seems to have ngModule so that it's easier to split code and reuse. 
-However, I'll need to figure out a guidelines for modules.
+However, we'll need to figure out a guidelines for modules.
 
 ## Advantage of Angular
 
-Angular has a couple unique supports out of box or some refers to high learning
-curve:
+So why Angular? From the conference, there a couple things that attracts me as
+developer to use Angular over others:
 
 * TypeScript
 * RxJS
@@ -94,6 +103,12 @@ on many different components. Some better developers may create a utilities clas
 to hold such methods. However, other developers to came into this system without
 any previous knowledge or documentation may find it confusing to follow code.
 
+Last but not least, TypeScript is a language that back-end developers can find 
+themselves familiar and get started with very quickly. Most of features from the
+back-end strong typed languages like Java is *optionally* supported in TypeScript.
+This means back-end developers should be able to get started very quickly or
+even better back-end developers can start to sync up the domain object logic
+from the back-end to front-end themselves.
 
 ### Why is RxJS good?
 
@@ -106,9 +121,28 @@ http requests, they start to suffer into the indentation hell (which is similar
 to callback hell but ending up high amount of indentations). Observable helps
 in this case, Observables are like Promise but handles multiple of them well.
 
-### Why is Angular-CLI good?
+### Why is [Angular-CLI](https://github.com/angular/angular-cli) good?
 
 Allows developer to use CLI to handle common operations like creating new 
 componenets. This reduce the chance of going off track and helps to keep high
 consistency of the code. Moreover, this allows the framework later to take 
 advantage of the application structure to migrate to newer version! Amazing!
+
+In example, one can use `ng new PROJECT_NAME` to create a new project.
+
+With so many features implemented out of box from Angular CLI, my concern on the
+CLI is how CLI can integrate with existing build system. We are using GulpJS to
+build system and put them into the right folder for Apache httpd module to serve
+static assets up. In addition, how does the back-end templating being supported
+with Angular index.html. This remains to me as a challenge to resolve in the
+front-end build system.
+
+### Why is Dependency Injection good?
+
+This implies testing is done in mind from the beginning of the framework. To do
+testing, one usually needs to create their own Dependency Injection to mock data
+for testing. And replace such data source on production usage and so on.
+
+Angular supports Dependency Injection from the framework level. This allows 
+Angular to do testing without any sort of magic. One who understands Dependency
+Injection would know how testing works behind the scene.
