@@ -1,5 +1,9 @@
 # ngrx with forms
 
+## Github repo
+
+https://github.com/CodeSequence/ngrx-workshop
+
 ## Define actions
 
 ```ts

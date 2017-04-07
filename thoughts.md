@@ -2,15 +2,19 @@
 
 ## Context
 
-This document stores my personal thoughts on Angular while listening to presentations 
+This document focues my personal thoughts on Angular while listening to presentations 
 in ngConf such as what prevents me from using Angular in production and my 
 strategies of implementing Angular in production environment.
 
+> I'm refering Angular as Angular 2+ and AngularJS being Angular 1.x
+
 ## Blocking stones
 
-Before we start, I need to state -- **I love Angular**. But I'm not using Angular in
-production yet and not plan to use it before ngConf. Why? There are some blocking
-stones for me to consider using it on my work environments.
+Before we start, I need to state -- **I love Angular**. However, I'm not using 
+Angular in production yet and not plan to use it prior to attend ngConf. Why? 
+There are some blocking stones for me to consider using on my work environments.
+Specifically on **build system (configuration)**, 
+**existing front-end architecture** & **learning curve**.
 
 ### Build system
 
@@ -146,3 +150,34 @@ for testing. And replace such data source on production usage and so on.
 Angular supports Dependency Injection from the framework level. This allows 
 Angular to do testing without any sort of magic. One who understands Dependency
 Injection would know how testing works behind the scene.
+
+## Actionable items
+
+- [ ] Implement the webpack build system
+- [ ] Integrate webpack build with Angular
+- [ ] Load up bundle files from server side macro
+- [ ] (Optional) Figure out a way to do live-reload for dev environment
+- [ ] (POC) Convert an AngularJS app to Angular
+- [ ] Rewrite in house UI framework into Angular as core
+	- [ ] Or pick up a existing UI framework
+
+## Labs
+
+This section will contain a couple laboratory type of ideas like using Redux.
+
+### Observables
+
+There are a lot of operators provided out of box from RxJS with Observables.
+Angular has Observables built in and thus easily to take advantage of Observables.
+
+### Redux
+
+Why Redux? Why not just pass the data down as `@Input` and `@Output`?
+
+Redux allows the engineer to code the code in Plain JS or Plain TypeScript to 
+handle domain specific logic and its state. This implies the business logic is
+easily testable without knowing the UI layer. Then the UI layer can be pure
+funcitonal UI componenet (take data and display it).
+
+Second of all, Redux enforces functional programming (no side effect). In my
+opinion, this will enforce developers to create code that has less runtime error.
